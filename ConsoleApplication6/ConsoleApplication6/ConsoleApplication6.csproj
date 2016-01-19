@@ -48,10 +48,10 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridIO.cs" />
-    <Compile Include="GridTest.cs" />
-    <Compile Include="IGridIO.cs" />
-    <Compile Include="IGridOperations.cs" />
-    <Compile Include="MinesweeperTest.cs" />
+    <Compile Include="TestClasses\GridTest.cs" />
+    <Compile Include="Interfaces\IGridIO.cs" />
+    <Compile Include="Interfaces\IGridOperations.cs" />
+    <Compile Include="TestClasses\MinesweeperTest.cs" />
     <Compile Include="Play.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
