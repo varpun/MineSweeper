@@ -11,7 +11,10 @@ namespace ConsoleApplication6
         private Cell[,] _Cell = new Cell[10, 10];
         private int _Row, _Column;
         private int _RowLength = 10;
+        private int _RowGrid = 8;
+        private int _ColumnGrid = 8;
         private int _ColumnLength = 10;
+        private int _NumberOfMines = 10;
         private IGridIO _GridIO;
 
         public Grid(IGridIO gridIO)
@@ -23,15 +26,15 @@ namespace ConsoleApplication6
         public bool Win()
         {
             int count = 0;
-            for (int line = 1; line < 9; line++)
+            for (int line = 1; line <=_RowGrid; line++)
             {
-                for (int column = 1; column < 9; column++)
+                for (int column = 1; column <= _ColumnGrid; column++)
                 {
                     if (_Cell[line, column].CellState == '*')
                         count++;
                 }
             }
-            if (count == 10)
+            if (count == _NumberOfMines)
             {
                 return true;
             }
@@ -67,15 +70,15 @@ namespace ConsoleApplication6
                 _GridIO.WriteOutput("\nrow: ");
                 _Row = _GridIO.ReadInputNumber();
                 _GridIO.WriteOutput("Column: ");
-                _Column = _GridIO.ReadInputNumber(); 
+                _Column = _GridIO.ReadInputNumber();
 
-                if (_Row < 1 || _Row > 8 || _Column < 1 || _Column > 8)
+                if (_Row < 1 || _Row > _RowGrid || _Column < 1 || _Column > _ColumnGrid)
                 {
                     _GridIO.WriteLineOutput("Choose a number between 1 and 8");
                     continue;
                 }
 
-                if ((_Cell[_Row, _Column].CellState != '*') && ((_Row < 9 && _Row > 0) && (_Column < 9 && _Column > 0)))
+                if ((_Cell[_Row, _Column].CellState != '*') && ((_Row <= _RowGrid && _Row > 0) && (_Column <= _ColumnGrid && _Column > 0)))
                 {
                     _GridIO.WriteLineOutput("Field already shown");
                 }
@@ -87,7 +90,7 @@ namespace ConsoleApplication6
                 }
 
             }
-            while ((_Row < 1 || _Row > 8 || _Column < 1 || _Column > 8) || (_Cell[_Row, _Column].CellState != '*'));
+            while ((_Row < 1 || _Row > _RowGrid || _Column < 1 || _Column > _ColumnGrid) || (_Cell[_Row, _Column].CellState != '*'));
 
             if (GetPosition(_Row, _Column) == -1)
             {
@@ -102,11 +105,11 @@ namespace ConsoleApplication6
         public void ShowGrid()
         {
             _GridIO.WriteLineOutput("\n     Lines");
-            for (int line = 8; line > 0; line--)
+            for (int line = _RowGrid; line > 0; line--)
             {
                 _GridIO.WriteOutput("       " + line + " ");
 
-                for (int column = 1; column < 9; column++)
+                for (int column = 1; column <= _ColumnGrid; column++)
                 {
                     _GridIO.WriteOutput("   " + _Cell[line, column].CellState);
                 }
@@ -120,9 +123,9 @@ namespace ConsoleApplication6
 
         private void FillSurroundingNeighbours()
         {
-            for (int line = 1; line < 9; line++)
+            for (int line = 1; line <= _RowGrid; line++)
             {
-                for (int column = 1; column < 9; column++)
+                for (int column = 1; column <= _ColumnGrid; column++)
                 {
                     for (int i = -1; i <= 1; i++)
                     {
@@ -143,9 +146,9 @@ namespace ConsoleApplication6
 
         public void RevealMines()
         {
-            for (int i = 1; i < 9; i++)
+            for (int i = 1; i <= _RowGrid; i++)
             {
-                for (int j = 1; j < 9; j++)
+                for (int j = 1; j <= _ColumnGrid; j++)
                 {
                     if (_Cell[i, j].MineValue != -1)
                     {
@@ -171,7 +174,7 @@ namespace ConsoleApplication6
         {
             bool shuffle;
             int line, column;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < _RowLength; i++)
             {
                 do
                 {
