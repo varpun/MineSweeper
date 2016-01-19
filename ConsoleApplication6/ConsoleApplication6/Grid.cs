@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication6
 {
-    public class Grid
+    public class Grid : IGridOperations
     {
         private Cell[,] _Cell = new Cell[10, 10];
         private int _Row, _Column;
@@ -54,7 +54,7 @@ namespace ConsoleApplication6
             }
         }
 
-        public int GetPosition(int line, int column)
+        private int GetPosition(int line, int column)
         {
             return _Cell[line, column].MineValue;
         }
@@ -117,7 +117,7 @@ namespace ConsoleApplication6
             Console.WriteLine("                      Columns");
         }
 
-        public void FillSurroundingNeighbours()
+        private void FillSurroundingNeighbours()
         {
             for (int line = 1; line < 9; line++)
             {
@@ -155,7 +155,7 @@ namespace ConsoleApplication6
             ShowGrid();
         }
 
-        public void InitializeBoard()
+        private void InitializeBoard()
         {
             for (int i = 0; i < _RowLength; i++)
             {
@@ -166,7 +166,7 @@ namespace ConsoleApplication6
             }
         }
 
-        public void PlaceMines(int initialLine, int initialColumn)
+        private void PlaceMines(int initialLine, int initialColumn)
         {
             bool shuffle;
             int line, column;

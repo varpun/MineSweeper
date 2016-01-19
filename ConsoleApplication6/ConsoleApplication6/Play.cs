@@ -8,7 +8,7 @@ namespace ConsoleApplication6
 {
     public class Play
     {
-        private Grid grid;
+        private IGridOperations _Grid;
         bool finish = false;
         int turn = 0;
 
@@ -19,11 +19,11 @@ namespace ConsoleApplication6
 
         public Play()
         {
-            grid = new Grid();
-            StartGame(grid);
+            _Grid = new Grid();
+            StartGame(_Grid);
         }
 
-        public void StartGame(Grid grid)
+        public void StartGame(IGridOperations grid)
         {
             do
             {
