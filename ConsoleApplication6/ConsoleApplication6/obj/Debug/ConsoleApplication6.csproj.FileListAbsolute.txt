@@ -4,3 +4,8 @@ c:\users\varun\documents\visual studio 2013\Projects\ConsoleApplication6\Console
 c:\users\varun\documents\visual studio 2013\Projects\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.csprojResolveAssemblyReference.cache
 c:\users\varun\documents\visual studio 2013\Projects\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.exe
 c:\users\varun\documents\visual studio 2013\Projects\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.pdb
+c:\users\varun\documents\visual studio 2013\Projects\ConsoleApplication6\ConsoleApplication6\bin\Debug\Moq.dll
+c:\users\varun\documents\visual studio 2013\Projects\ConsoleApplication6\ConsoleApplication6\bin\Debug\Moq.xml
+C:\Users\varun\Documents\Visual Studio 2013\Projects\minesweep5\ConsoleApplication6\ConsoleApplication6\bin\Debug\ConsoleApplication6.exe.config
+C:\Users\varun\Documents\Visual Studio 2013\Projects\minesweep5\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.exe
+C:\Users\varun\Documents\Visual Studio 2013\Projects\minesweep5\ConsoleApplication6\ConsoleApplication6\obj\Debug\ConsoleApplication6.pdb
