@@ -12,10 +12,11 @@ namespace ConsoleApplication6
         private int _Row, _Column;
         private int _RowLength = 10;
         private int _ColumnLength = 10;
-        private Random _Random = new Random();
+        private IGridIO _GridIO;
 
-        public Grid()
+        public Grid(IGridIO gridIO)
         {
+            _GridIO = gridIO;
             InitializeBoard();
         }
 
@@ -63,20 +64,20 @@ namespace ConsoleApplication6
         {
             do
             {
-                Console.Write("\nrow: ");
-                _Row = Convert.ToInt32(Console.ReadLine());
-                Console.Write("Column: ");
-                _Column = Convert.ToInt32(Console.ReadLine());
+                _GridIO.WriteOutput("\nrow: ");
+                _Row = _GridIO.ReadInputNumber();
+                _GridIO.WriteOutput("Column: ");
+                _Column = _GridIO.ReadInputNumber(); 
 
                 if (_Row < 1 || _Row > 8 || _Column < 1 || _Column > 8)
                 {
-                    Console.WriteLine("Choose a number between 1 and 8");
+                    _GridIO.WriteLineOutput("Choose a number between 1 and 8");
                     continue;
                 }
 
                 if ((_Cell[_Row, _Column].CellState != '*') && ((_Row < 9 && _Row > 0) && (_Column < 9 && _Column > 0)))
                 {
-                    Console.WriteLine("Field already shown");
+                    _GridIO.WriteLineOutput("Field already shown");
                 }
 
                 if (turn == 1)
@@ -100,21 +101,21 @@ namespace ConsoleApplication6
 
         public void ShowGrid()
         {
-            Console.WriteLine("\n     Lines");
+            _GridIO.WriteLineOutput("\n     Lines");
             for (int line = 8; line > 0; line--)
             {
-                Console.Write("       " + line + " ");
+                _GridIO.WriteOutput("       " + line + " ");
 
                 for (int column = 1; column < 9; column++)
                 {
-                    Console.Write("   " + _Cell[line, column].CellState);
+                    _GridIO.WriteOutput("   " + _Cell[line, column].CellState);
                 }
 
-                Console.WriteLine();
+                _GridIO.WriteLineOutput(string.Empty);
             }
 
-            Console.WriteLine("\n            1   2   3   4   5   6   7   8");
-            Console.WriteLine("                      Columns");
+            _GridIO.WriteLineOutput("\n            1   2   3   4   5   6   7   8");
+            _GridIO.WriteLineOutput("                      Columns");
         }
 
         private void FillSurroundingNeighbours()
@@ -174,8 +175,8 @@ namespace ConsoleApplication6
             {
                 do
                 {
-                    line = _Random.Next(8) + 1;
-                    column = _Random.Next(8) + 1;
+                    line = _GridIO.GetNextRandomNumber() + 1;
+                    column = _GridIO.GetNextRandomNumber() + 1;
                     if (line == initialLine && column == initialColumn)
                     {
                         shuffle = true;

@@ -19,7 +19,7 @@ namespace ConsoleApplication6
 
         public Play()
         {
-            _Grid = new Grid();
+            _Grid = new Grid(new GridIO());
             StartGame(_Grid);
         }
 
