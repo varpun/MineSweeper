@@ -8,20 +8,15 @@ namespace ConsoleApplication6
 {
     public class Grid
     {
-        private int[,] mines;
-        private char[,] actualGrid;
-        private int row, column;
-        int rowLength = 10;
-        int columnLength = 10;
-        Random random = new Random();
+        private Cell[,] _Cell = new Cell[10, 10];
+        private int _Row, _Column;
+        private int _RowLength = 10;
+        private int _ColumnLength = 10;
+        private Random _Random = new Random();
 
         public Grid()
         {
-            mines = new int[10, 10];
-            actualGrid = new char[10, 10];
-            InitializeMines();
-            
-            StartBoard();
+            InitializeBoard();
         }
 
         public bool Win()
@@ -31,14 +26,18 @@ namespace ConsoleApplication6
             {
                 for (int column = 1; column < 9; column++)
                 {
-                    if (actualGrid[line, column] == '*')
+                    if (_Cell[line, column].CellState == '*')
                         count++;
                 }
             }
             if (count == 10)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
         public void RevealNeighbors()
@@ -47,9 +46,9 @@ namespace ConsoleApplication6
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    if (mines[row + i, column + j] != -1)
+                    if (_Cell[_Row + i, _Column + j].MineValue != -1)
                     {
-                        actualGrid[row + i, column + j] = mines[row + i, column + j].ToString()[0];
+                        _Cell[_Row + i, _Column + j].CellState = _Cell[_Row + i, _Column + j].MineValue.ToString()[0];
                     }
                 }
             }
@@ -57,38 +56,39 @@ namespace ConsoleApplication6
 
         public int GetPosition(int line, int column)
         {
-            return mines[line, column];
+            return _Cell[line, column].MineValue;
         }
 
-        public bool ReadAndSetPosition(int turn)
+        public bool CheckCellPosition(int turn)
         {
             do
             {
                 Console.Write("\nrow: ");
-                row = Convert.ToInt32(Console.ReadLine());
+                _Row = Convert.ToInt32(Console.ReadLine());
                 Console.Write("Column: ");
-                column = Convert.ToInt32(Console.ReadLine());
-                
-                if ((actualGrid[row, column] != '*') && ((row < 9 && row > 0) && (column < 9 && column > 0)))
-                { 
-                    Console.WriteLine("Field already shown"); 
+                _Column = Convert.ToInt32(Console.ReadLine());
+
+                if (_Row < 1 || _Row > 8 || _Column < 1 || _Column > 8)
+                {
+                    Console.WriteLine("Choose a number between 1 and 8");
+                    continue;
                 }
 
-                if (row < 1 || row > 8 || column < 1 || column > 8)
-                { 
-                    Console.WriteLine("Choose a number between 1 and 8"); 
+                if ((_Cell[_Row, _Column].CellState != '*') && ((_Row < 9 && _Row > 0) && (_Column < 9 && _Column > 0)))
+                {
+                    Console.WriteLine("Field already shown");
                 }
 
                 if (turn == 1)
                 {
-                    PlaceMines(row, column);
-                    FillNoOfSurroundingNeighbours();
+                    PlaceMines(_Row, _Column);
+                    FillSurroundingNeighbours();
                 }
 
-            } 
-            while ((row < 1 || row > 8 || column < 1 || column > 8) || (actualGrid[row, column] != '*'));
+            }
+            while ((_Row < 1 || _Row > 8 || _Column < 1 || _Column > 8) || (_Cell[_Row, _Column].CellState != '*'));
 
-            if (GetPosition(row, column) == -1)
+            if (GetPosition(_Row, _Column) == -1)
             {
                 return true;
             }
@@ -107,7 +107,7 @@ namespace ConsoleApplication6
 
                 for (int column = 1; column < 9; column++)
                 {
-                    Console.Write("   " + actualGrid[line, column]);
+                    Console.Write("   " + _Cell[line, column].CellState);
                 }
 
                 Console.WriteLine();
@@ -117,7 +117,7 @@ namespace ConsoleApplication6
             Console.WriteLine("                      Columns");
         }
 
-        public void FillNoOfSurroundingNeighbours()
+        public void FillSurroundingNeighbours()
         {
             for (int line = 1; line < 9; line++)
             {
@@ -127,11 +127,11 @@ namespace ConsoleApplication6
                     {
                         for (int j = -1; j <= 1; j++)
                         {
-                            if (mines[line, column] != -1)
+                            if (_Cell[line, column].MineValue != -1)
                             {
-                                if (mines[line + i, column + j] == -1)
+                                if (_Cell[line + i, column + j].MineValue == -1)
                                 {
-                                    mines[line, column]++;
+                                    _Cell[line, column].MineValue++;
                                 }
                             }
                         }
@@ -142,43 +142,31 @@ namespace ConsoleApplication6
 
         public void RevealMines()
         {
-
             for (int i = 1; i < 9; i++)
             {
                 for (int j = 1; j < 9; j++)
                 {
-                    if (mines[i, j] == -1)
+                    if (_Cell[i, j].MineValue != -1)
                     {
-                        actualGrid[i, j] = '#';
+                        _Cell[i, j].CellState = '#';
                     }
                 }
             }
             ShowGrid();
         }
 
-        public void StartBoard()
+        public void InitializeBoard()
         {
-            for (int i = 1; i < rowLength; i++)
+            for (int i = 0; i < _RowLength; i++)
             {
-                for (int j = 1; j < columnLength; j++)
+                for (int j = 0; j < _ColumnLength; j++)
                 {
-                    actualGrid[i, j] = '*';
+                    _Cell[i, j] = new Cell();
                 }
             }
         }
 
-        public void InitializeMines()
-        {
-            for (int i = 0; i < rowLength; i++)
-            {
-                for (int j = 0; j < columnLength; j++)
-                {
-                    mines[i, j] = 0;
-                }
-            }
-        }
-
-        public void PlaceMines(int initialLine,int initialColumn)
+        public void PlaceMines(int initialLine, int initialColumn)
         {
             bool shuffle;
             int line, column;
@@ -186,13 +174,13 @@ namespace ConsoleApplication6
             {
                 do
                 {
-                    line = random.Next(8) + 1;
-                    column = random.Next(8) + 1;
-                    if(line == initialLine  && column == initialColumn)
+                    line = _Random.Next(8) + 1;
+                    column = _Random.Next(8) + 1;
+                    if (line == initialLine && column == initialColumn)
                     {
                         shuffle = true;
                     }
-                    else if (mines[line, column] == -1)
+                    else if (_Cell[line, column].MineValue == -1)
                     {
                         shuffle = true;
                     }
@@ -202,7 +190,7 @@ namespace ConsoleApplication6
                     }
                 }
                 while (shuffle);
-                mines[line, column] = -1;
+                _Cell[line, column].MineValue = -1;
             }
         }
     }

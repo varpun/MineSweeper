@@ -30,7 +30,7 @@ namespace ConsoleApplication6
                 turn++;
                 Console.WriteLine("Turn " + turn);
                 grid.ShowGrid();                
-                finish = grid.ReadAndSetPosition(turn);
+                finish = grid.CheckCellPosition(turn);
 
                 if (!finish)
                 {
